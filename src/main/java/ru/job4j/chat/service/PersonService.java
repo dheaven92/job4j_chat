@@ -1,6 +1,8 @@
 package ru.job4j.chat.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.job4j.chat.model.Person;
 import ru.job4j.chat.model.Role;
@@ -13,12 +15,16 @@ public class PersonService {
 
     private final PersonRepository personRepository;
     private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    private final static String ROLE_ADMIN = "ADMIN";
-    private final static String ROLE_USER = "USER";
+    private final static String ROLE_USER = "ROLE_USER";
 
     public Person findById(int id) {
         return personRepository.findById(id).orElse(null);
+    }
+
+    public Person findByUsername(String username) {
+        return personRepository.findByUsername(username);
     }
 
     public Person create(Person person) {
@@ -30,10 +36,11 @@ public class PersonService {
             throw new IllegalArgumentException("Can't create user. Username is already used by another user.");
         }
         person.setRole(role);
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
         return personRepository.save(person);
     }
 
-    public boolean isAdmin(Person person) {
-        return ROLE_ADMIN.equals(person.getRole().getName());
+    public Person getCurrentUser() {
+        return (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

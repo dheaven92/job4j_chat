@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.chat.model.Person;
 import ru.job4j.chat.model.Room;
-import ru.job4j.chat.service.PersonService;
 import ru.job4j.chat.service.RoomService;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import java.util.List;
 public class RoomController {
 
     private final RoomService roomService;
-    private final PersonService personService;
 
     @GetMapping("/")
     public List<Room> getAll() {
@@ -42,17 +39,10 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
-            @PathVariable("id") int id,
-            @RequestParam(value = "user_id") int userId
-    ) {
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         Room room = roomService.findById(id);
-        Person user = personService.findById(userId);
-        if (room == null || user == null) {
+        if (room == null) {
             return ResponseEntity.notFound().build();
-        }
-        if (!personService.isAdmin(user)) {
-            return ResponseEntity.badRequest().build();
         }
         roomService.delete(room);
         return ResponseEntity.ok().build();

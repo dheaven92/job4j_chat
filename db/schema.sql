@@ -8,6 +8,7 @@ create table role (
 create table person (
     id       serial primary key,
     username text not null unique,
+    password text not null,
     role_id  int  not null references role (id),
     created  timestamp default now(),
     updated  timestamp default now()
