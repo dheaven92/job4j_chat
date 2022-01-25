@@ -30,6 +30,10 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
+    public Room update(Room room) {
+        return roomRepository.save(room);
+    }
+
     @Transactional
     public void delete(Room room) {
         messageService.deleteAllByRoomId(room.getId());

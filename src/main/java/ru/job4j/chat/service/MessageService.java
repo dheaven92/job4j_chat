@@ -11,7 +11,11 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    public Message create(Message message) {
+    public Message findById(int id) {
+        return messageRepository.findById(id).orElse(null);
+    }
+
+    public Message save(Message message) {
         return messageRepository.save(message);
     }
 

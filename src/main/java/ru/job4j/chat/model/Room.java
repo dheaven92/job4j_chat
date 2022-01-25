@@ -3,8 +3,11 @@ package ru.job4j.chat.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -27,4 +30,12 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private Set<Message> messages = new TreeSet<>(Comparator.comparingInt(Message::getId));
+
+    @CreationTimestamp
+    @Column(name = "created", nullable = false, updatable = false)
+    private LocalDateTime created;
+
+    @UpdateTimestamp
+    @Column(name = "updated", nullable = false)
+    private LocalDateTime updated;
 }

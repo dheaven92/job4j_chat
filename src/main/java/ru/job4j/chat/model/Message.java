@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
@@ -31,4 +34,12 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @CreationTimestamp
+    @Column(name = "created", nullable = false, updatable = false)
+    private LocalDateTime created;
+
+    @UpdateTimestamp
+    @Column(name = "updated", nullable = false)
+    private LocalDateTime updated;
 }
