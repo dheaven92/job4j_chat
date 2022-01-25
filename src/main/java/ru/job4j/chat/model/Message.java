@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -23,6 +24,7 @@ public class Message {
     @Column(name = "id")
     private int id;
 
+    @NotEmpty(message = "Can't be empty")
     @Column(name = "body", nullable = false)
     private String body;
 

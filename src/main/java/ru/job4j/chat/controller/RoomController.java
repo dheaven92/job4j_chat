@@ -10,6 +10,7 @@ import ru.job4j.chat.model.Room;
 import ru.job4j.chat.service.RoomService;
 import ru.job4j.chat.util.PatchUtil;
 
+import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class RoomController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Room> create(@RequestBody Room room) {
+    public ResponseEntity<Room> create(@RequestBody @Valid Room room) {
         return new ResponseEntity<>(
                 roomService.create(room),
                 HttpStatus.CREATED

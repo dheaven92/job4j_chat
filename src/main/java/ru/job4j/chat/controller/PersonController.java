@@ -9,8 +9,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.chat.model.ErrorResponse;
+import ru.job4j.chat.model.Operation;
 import ru.job4j.chat.model.Person;
 import ru.job4j.chat.security.JwtTokenProvider;
 import ru.job4j.chat.service.PersonService;
@@ -28,7 +30,7 @@ public class PersonController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<Person> create(@RequestBody Person person) {
+    public ResponseEntity<Person> register(@RequestBody @Validated(Operation.OnAuthentication.class) Person person) {
         return new ResponseEntity<>(
                 personService.create(person),
                 HttpStatus.CREATED
@@ -36,7 +38,7 @@ public class PersonController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Person personRequest) {
+    public ResponseEntity<String> login(@RequestBody @Validated(Operation.OnAuthentication.class) Person personRequest) {
         try {
             String username = personRequest.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, personRequest.getPassword()));

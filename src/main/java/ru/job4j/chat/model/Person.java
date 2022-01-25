@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -24,10 +25,12 @@ public class Person implements UserDetails {
     @Column(name = "id")
     private int id;
 
+    @NotEmpty(message = "Can't be empty", groups = {Operation.OnAuthentication.class})
     @EqualsAndHashCode.Include
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @NotEmpty(message = "Can't be empty", groups = {Operation.OnAuthentication.class})
     @Column(name = "password", nullable = false)
     private String password;
 

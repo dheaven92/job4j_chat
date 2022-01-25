@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Set;
@@ -25,6 +26,7 @@ public class Room {
     @Column(name = "id")
     private int id;
 
+    @NotEmpty(message = "Can't be empty")
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 

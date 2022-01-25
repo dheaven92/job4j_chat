@@ -13,6 +13,7 @@ import ru.job4j.chat.service.PersonService;
 import ru.job4j.chat.service.RoomService;
 import ru.job4j.chat.util.PatchUtil;
 
+import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class MessageController {
     private final PersonService personService;
 
     @PostMapping("/")
-    public ResponseEntity<Message> create(@RequestParam("room_id") int roomId, @RequestBody Message message) {
+    public ResponseEntity<Message> create(@RequestParam("room_id") int roomId, @RequestBody @Valid Message message) {
         Room room = roomService.findById(roomId);
         if (room == null) {
             throw new NotFoundException("Could not find a room with id " + roomId);
