@@ -18,8 +18,8 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping("/")
-    public List<Room> getAll() {
-        return roomService.findAll();
+    public ResponseEntity<List<Room>> getAll() {
+        return new ResponseEntity<>(roomService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
