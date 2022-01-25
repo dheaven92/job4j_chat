@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.chat.exception.NotFoundException;
 import ru.job4j.chat.model.Message;
 import ru.job4j.chat.model.Room;
 import ru.job4j.chat.service.MessageService;
@@ -23,7 +24,7 @@ public class MessageController {
     public ResponseEntity<Message> create(@RequestParam("room_id") int roomId, @RequestBody Message message) {
         Room room = roomService.findById(roomId);
         if (room == null) {
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("Could not find a room with id " + roomId);
         }
         message.setAuthor(personService.getCurrentUser());
         message.setRoom(room);

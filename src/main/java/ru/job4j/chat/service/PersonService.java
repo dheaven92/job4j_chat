@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.job4j.chat.exception.NotFoundException;
 import ru.job4j.chat.model.Person;
 import ru.job4j.chat.model.Role;
 import ru.job4j.chat.repository.PersonRepository;
@@ -30,7 +31,7 @@ public class PersonService {
     public Person create(Person person) {
         Role role = roleRepository.findByName(ROLE_USER);
         if (role == null) {
-            throw new IllegalArgumentException(String.format("Can't create user. Could not find role %s.", ROLE_USER));
+            throw new NotFoundException(String.format("Can't create user. Could not find role %s.", ROLE_USER));
         }
         if (personRepository.existsByUsername(person.getUsername())) {
             throw new IllegalArgumentException("Can't create user. Username is already used by another user.");

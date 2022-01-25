@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.chat.exception.NotFoundException;
 import ru.job4j.chat.model.Room;
 import ru.job4j.chat.service.RoomService;
 
@@ -25,7 +26,7 @@ public class RoomController {
     public ResponseEntity<Room> getRoomById(@PathVariable("id") int id) {
         Room room = roomService.findById(id);
         if (room == null) {
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("Could not find a room with id " + id);
         }
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
@@ -42,7 +43,7 @@ public class RoomController {
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         Room room = roomService.findById(id);
         if (room == null) {
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("Could not find a room with id " + id);
         }
         roomService.delete(room);
         return ResponseEntity.ok().build();
